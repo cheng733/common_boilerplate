@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.mapper.CommonMapper">
+    
+    <select id="selectById" resultType="com.common.entity.CommonEntity">
+        SELECT * FROM common_entity WHERE id = #{id}
+    </select>
+    
+    <select id="selectList" resultType="com.common.entity.CommonEntity">
+        SELECT * FROM common_entity
+    </select>
+    
+    <insert id="insert" parameterType="com.common.entity.CommonEntity">
+        INSERT INTO common_entity (name, description)
+        VALUES (#{name}, #{description})
+    </insert>
+    
+    <update id="update" parameterType="com.common.entity.CommonEntity">
+        UPDATE common_entity
+        SET name = #{name}, description = #{description}
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM common_entity WHERE id = #{id}
+    </delete>
+</mapper>
