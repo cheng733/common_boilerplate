@@ -130,6 +130,29 @@
                     </excludes>
                 </configuration>
             </plugin>
+        <plugin>
+            <groupId>io.github.git-commit-id</groupId>
+            <artifactId>git-commit-id-maven-plugin</artifactId>
+            <version>5.0.0</version>
+            <executions>
+                <execution>
+                    <id>validate-commit</id>
+                    <phase>validate</phase>
+                    <goals>
+                        <goal>validateRevision</goal>
+                    </goals>
+                    <configuration>
+                        <validationProperties>
+                            <validationProperty>
+                                <name>validating commit message</name>
+                                <value>${git.commit.message.full}</value>
+                                <shouldMatchTo><![CDATA[^(feat|fix|docs|style|refactor|test|chore)(\(.+\))?: .+]]></shouldMatchTo>
+                            </validationProperty>
+                        </validationProperties>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
         </plugins>
     </build>
 </project>
