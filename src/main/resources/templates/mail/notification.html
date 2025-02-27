@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>通知邮件</title>
+</head>
+<body>
+    <h1 th:text="${title}">标题</h1>
+    <p>尊敬的 <span th:text="${userName}">用户</span>：</p>
+    <p th:text="${content}">内容</p>
+    <p>
+        发送时间：<span th:text="${#dates.format(sendTime, 'yyyy-MM-dd HH:mm:ss')}">2023-01-01 00:00:00</span>
+    </p>
+</body>
+</html>
