@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.mapper.ProductMapper">
+    
+    <insert id="insert" parameterType="com.common.entity.Product">
+        INSERT INTO product (
+            name,
+            stock,
+            code,
+            price
+        ) VALUES (
+            #{name},
+            #{stock},
+            #{code},
+            #{price}
+        )
+    </insert>
+    
+    <select id="selectList" resultType="com.common.entity.Product">
+        SELECT 
+            id,
+            name,
+            stock,
+            code,
+            price
+        FROM product
+    </select>
+    
+</mapper>
