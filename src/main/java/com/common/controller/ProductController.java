@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Api(tags = "商品接口")
+@Api(tags = "商品管理")
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
@@ -22,9 +22,9 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     
-    @ApiOperation("导入Excel")
-    @PostMapping("/import")
-    public Result<List<Product>> importExcel(@RequestParam("file") MultipartFile file) {
+    @ApiOperation(value = "导入商品数据")
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Result<List<Product>> importExcel(@RequestPart("file") MultipartFile file) {
         try {
             List<Product> products = productService.importExcel(file);
             return Result.success(products);
@@ -33,7 +33,11 @@ public class ProductController {
         }
     }
     
-    @ApiOperation("下载模板")
+    @ApiOperation(value = "下载导入模板", notes = "下载商品导入的Excel模板文件")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "下载成功"),
+        @ApiResponse(code = 404, message = "模板文件不存在")
+    })
     @GetMapping("/template")
     public ResponseEntity<byte[]> downloadTemplate() {
         try {
@@ -47,7 +51,10 @@ public class ProductController {
         }
     }
     
-    @ApiOperation("获取商品列表")
+    @ApiOperation(value = "获取商品列表", notes = "获取所有商品数据")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "获取成功", response = Product.class, responseContainer = "List")
+    })
     @GetMapping("/list")
     public Result<List<Product>> getList() {
         return Result.success(productService.getList());
