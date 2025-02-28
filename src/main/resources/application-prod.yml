@@ -1,0 +1,16 @@
+server:
+  port: 8082
+
+spring:
+  datasource:
+    url: jdbc:mysql://prod-server:3306/common_prod?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: prod
+    password: prod123
+  mail:
+    host: smtp.qq.com
+    username: prod-email@qq.com
+    password: prod-password
+    port: 587
+
+file:
+  upload-path: /data/common_boil/uploads/prod

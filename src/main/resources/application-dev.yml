@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/common?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  mail:
+    host: smtp.qq.com
+    username: dev-email@qq.com
+    password: dev-password
+    port: 587
+
+file:
+  upload-path: d:/common_boil/uploads/dev
