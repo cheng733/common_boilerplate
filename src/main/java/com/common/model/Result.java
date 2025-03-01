@@ -15,7 +15,7 @@ public class Result<T> {
 
     @ApiModelProperty(value = "返回数据")
     private T data;
-
+    
     public static <T> Result<T> success(T data) {
         Result<T> result = new Result<>();
         result.setCode(200);
@@ -23,14 +23,22 @@ public class Result<T> {
         result.setData(data);
         return result;
     }
-
+    
+    public static <T> Result<T> success() {
+        Result<T> result = new Result<>();
+        result.setCode(200);
+        result.setMessage("操作成功");
+        return result;
+    }
+    
     public static <T> Result<T> error(String message) {
         Result<T> result = new Result<>();
         result.setCode(500);
         result.setMessage(message);
         return result;
     }
-
+    
+    // 添加带状态码的错误返回方法
     public static <T> Result<T> error(Integer code, String message) {
         Result<T> result = new Result<>();
         result.setCode(code);

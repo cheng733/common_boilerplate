@@ -20,24 +20,6 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private Long expiration;
     
-    public String generateToken(String username) {
-        try {
-            Map<String, Object> claims = new HashMap<>();
-            claims.put("username", username);
-            
-            return Jwts.builder()
-                    .setClaims(claims)
-                    .setSubject(username)
-                    .setIssuedAt(new Date())
-                    .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
-                    .signWith(SignatureAlgorithm.HS256, secret)  // 移除 getBytes()
-                    .compact();
-        } catch (Exception e) {
-            log.error("Token generation failed", e);
-            throw new RuntimeException("Token generation failed: " + e.getMessage());
-        }
-    }
-    
     public String getUsernameFromToken(String token) {
         Claims claims = getClaimsFromToken(token);
         return claims.getSubject();
@@ -52,7 +34,40 @@ public class JwtUtil {
             return false;
         }
     }
-    
+    /**
+     * 生成token
+     * @param username 用户名
+     * @param userId 用户ID
+     * @return token字符串
+     */
+    public String generateToken(String username, Long userId) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + expiration * 1000);
+        
+        return Jwts.builder()
+                .setSubject(username)
+                .claim("userId", userId.toString())
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
+    }
+    /**
+     * 从token中获取用户ID
+     */
+    public Long getUserIdFromToken(String token) {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(token)
+                    .getBody();
+            
+            // 假设在生成token时已经将userId放入claims中
+            return Long.parseLong(claims.get("userId", String.class));
+        } catch (Exception e) {
+            return null;
+        }
+    }
     private Claims getClaimsFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(secret)  // 移除 getBytes()
