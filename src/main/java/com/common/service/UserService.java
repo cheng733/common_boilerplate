@@ -29,10 +29,6 @@ public interface UserService {
      */
     Result<User> findById(Long id);
     
-    /**
-     * 保存用户
-     */
-    Result<Boolean> save(UserDTO userDTO);
     
     /**
      * 更新用户
@@ -43,4 +39,9 @@ public interface UserService {
      * 删除用户
      */
     Result<Boolean> delete(Long id);
+    
+    /**
+     * 用户注册
+     */
+    Result<Boolean> register(UserDTO userDTO);
 }

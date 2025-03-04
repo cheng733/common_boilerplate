@@ -33,9 +33,9 @@ public class UserController {
     }
 
     @ApiOperation("新增用户")
-    @PostMapping
-    public Boolean save(@ApiParam(value = "用户信息", required = true) @RequestBody UserDTO userDTO) {
-        return userService.save(userDTO).getData();
+    @PostMapping("/register")
+    public Result<Boolean> register(@ApiParam(value = "用户信息", required = true) @RequestBody UserDTO userDTO) {
+        return userService.register(userDTO);
     }
 
     @ApiOperation("更新用户")

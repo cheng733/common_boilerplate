@@ -20,6 +20,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // 注册权限拦截器，拦截所有API请求
         registry.addInterceptor(permissionInterceptor)
                 .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/auth/**"); // 排除登录接口
+                .excludePathPatterns("/api/auth/**") // 排除登录接口
+                .excludePathPatterns("/api/user/register");
     }
 }

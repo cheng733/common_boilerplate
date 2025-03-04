@@ -22,8 +22,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+    
     @Autowired
     private HttpServletRequest request;
+    
     @Autowired
     private JwtUtil jwtUtil;
     
@@ -229,33 +231,33 @@ public class UserServiceImpl implements UserService {
         return Result.success(targetUser);
     }
     
-    @Override
-    @Transactional
-    public Result<Boolean> save(UserDTO userDTO) {
-        Long currentUserId = getCurrentUserId();
-        UserInfo currentUser = getUserInfoInternal(currentUserId);
-        int currentUserLevel = getHighestRoleLevel(currentUser.getRoles());
-        
-        // 检查要分配的角色权限是否超过当前用户权限
-        if (userDTO.getRoleIds() != null && !userDTO.getRoleIds().isEmpty()) {
-            for (Long roleId : userDTO.getRoleIds()) {
-                Role role = userMapper.findRoleById(roleId);
-                int roleLevel = getRoleLevel(role.getCode());
-                if (roleLevel <= currentUserLevel) {
-                    return Result.error(403, "您无权分配该角色");
-                }
+        @Override
+        @Transactional
+        public Result<Boolean> register(UserDTO userDTO) {
+            // 检查用户名是否已存在
+            User existingUser = userMapper.findByUsername(userDTO.getUsername());
+            if (existingUser != null) {
+                return Result.error(400, "用户名已存在");
             }
+            
+            // 创建新用户
+            User user = new User();
+            BeanUtils.copyProperties(userDTO, user);
+            
+            // 加密密码
+            user.setPassword(user.getPassword());
+            
+            // 保存用户基本信息
+            int result = userMapper.insert(user);
+            
+            // 分配普通用户角色
+            Role userRole = userMapper.findRoleByCode("ROLE_USER");
+            if (userRole != null) {
+                List<Long> roleIds = new ArrayList<>();
+                roleIds.add(userRole.getId());
+                userMapper.insertUserRoles(user.getId(), roleIds);
+            }
+            
+            return Result.success(result > 0);
         }
-        
-        User user = new User();
-        BeanUtils.copyProperties(userDTO, user);
-        int result = userMapper.insert(user);
-        
-        if (userDTO.getRoleIds() != null && !userDTO.getRoleIds().isEmpty()) {
-            userMapper.insertUserRoles(user.getId(), userDTO.getRoleIds());
-        }
-        
-        return Result.success(result > 0);
-    }
-        
 }

@@ -73,7 +73,11 @@
         </set>
         WHERE id = #{id}
     </update>
-    
+     <select id="findByUsername" resultType="com.common.entity.User">
+        SELECT *
+        FROM sys_user
+        WHERE username = #{username}
+    </select>
     <!-- 删除用户 -->
     <delete id="delete">
         DELETE FROM sys_user WHERE id = #{id}
@@ -91,4 +95,14 @@
     <delete id="deleteUserRoles">
         DELETE FROM sys_user_role WHERE user_id = #{userId}
     </delete>
+    
+    <!-- 根据角色代码查找角色 -->
+    <select id="findRoleByCode" resultType="com.common.entity.Role">
+        SELECT 
+            id,
+            code,
+            name
+        FROM sys_role
+        WHERE code = #{code}
+    </select>
 </mapper>

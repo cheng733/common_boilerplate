@@ -22,6 +22,14 @@ public interface UserMapper {
     List<Permission> findPermissionsByRoleId(@Param("roleId") Long roleId);
     
     List<User> findAll();
+    /**
+     * 根据用户名查找用户
+     */
+    User findByUsername(String username);
+    /**
+     * 根据角色编码查找角色
+     */
+    Role findRoleByCode(String code);
     
     int insert(User user);
     
