@@ -9,18 +9,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    @Autowired
-    private PermissionInterceptor permissionInterceptor;
+  @Autowired private PermissionInterceptor permissionInterceptor;
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        // 添加日志
-        System.out.println("注册权限拦截器");
-        
-        // 注册权限拦截器，拦截所有API请求
-        registry.addInterceptor(permissionInterceptor)
-                .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/auth/**") // 排除登录接口
-                .excludePathPatterns("/api/user/register");
-    }
+  @Override
+  public void addInterceptors(InterceptorRegistry registry) {
+    // 添加日志
+    System.out.println("注册权限拦截器");
+
+    // 注册权限拦截器，拦截所有API请求
+    registry
+        .addInterceptor(permissionInterceptor)
+        .addPathPatterns("/api/**")
+        .excludePathPatterns("/api/auth/**") // 排除登录接口
+        .excludePathPatterns("/api/user/register");
+  }
 }

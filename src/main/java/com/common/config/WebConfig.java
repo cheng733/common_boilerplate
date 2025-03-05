@@ -8,16 +8,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    
-    @Autowired
-    private JwtInterceptor jwtInterceptor;
-    
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(jwtInterceptor)
-                .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/auth/**")
-                .excludePathPatterns("/api/user/register")
-                .excludePathPatterns("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs");
-    }
+
+  @Autowired private JwtInterceptor jwtInterceptor;
+
+  @Override
+  public void addInterceptors(InterceptorRegistry registry) {
+    registry
+        .addInterceptor(jwtInterceptor)
+        .addPathPatterns("/api/**")
+        .excludePathPatterns("/api/auth/**")
+        .excludePathPatterns("/api/user/register")
+        .excludePathPatterns("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs");
+  }
 }

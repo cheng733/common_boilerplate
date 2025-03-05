@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public Result<String> handleException(Exception e) {
-        log.error("系统异常", e);
-        return Result.error(e.getMessage());
-    }
+  @ExceptionHandler(Exception.class)
+  public Result<String> handleException(Exception e) {
+    log.error("系统异常", e);
+    return Result.error(e.getMessage());
+  }
 
-    @ExceptionHandler(RuntimeException.class)
-    public Result<String> handleRuntimeException(RuntimeException e) {
-        log.error("运行时异常", e);
-        return Result.error(e.getMessage());
-    }
+  @ExceptionHandler(RuntimeException.class)
+  public Result<String> handleRuntimeException(RuntimeException e) {
+    log.error("运行时异常", e);
+    return Result.error(e.getMessage());
+  }
 }
