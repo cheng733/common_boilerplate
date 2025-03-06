@@ -1,5 +1,6 @@
 package com.common.config;
 
+import com.common.interceptor.HotlinkProtectionInterceptor;
 import com.common.interceptor.JwtInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,8 @@ public class WebConfig implements WebMvcConfigurer {
 
   @Autowired private JwtInterceptor jwtInterceptor;
 
+  @Autowired private HotlinkProtectionInterceptor hotlinkProtectionInterceptor;
+
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
     registry
@@ -19,5 +22,8 @@ public class WebConfig implements WebMvcConfigurer {
         .excludePathPatterns("/api/auth/**")
         .excludePathPatterns("/api/user/register")
         .excludePathPatterns("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs");
+
+    // 防盗链拦截器
+    registry.addInterceptor(hotlinkProtectionInterceptor);
   }
 }

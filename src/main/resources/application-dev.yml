@@ -13,4 +13,4 @@ spring:
     port: 587
 
 file:
-  upload-path: d:/common_boil/uploads/dev
+  upload-path: d:/common_boil/uploads
