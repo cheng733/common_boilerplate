@@ -9,7 +9,7 @@ import java.util.List;
 public interface UserService {
 
   /** 用户登录 */
-  Result<User> login(String username, String password);
+  Result<User> login(String username, String password, String captcha);
 
   /** 获取用户信息（包含角色和权限） */
   Result<UserInfo> getUserInfo(Long userId);

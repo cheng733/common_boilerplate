@@ -12,4 +12,7 @@ public class LoginRequest {
 
   @ApiModelProperty(value = "密码", required = true, example = "123456")
   private String password;
+
+  @ApiModelProperty(value = "验证码", required = true, example = "m5xn")
+  private String captcha;
 }

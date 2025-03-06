@@ -27,7 +27,8 @@ public class AuthController {
   public Result<Map<String, Object>> login(
       @RequestBody LoginRequest loginRequest) { // 使用LoginRequest替代LoginDTO
     Result<User> userResult =
-        userService.login(loginRequest.getUsername(), loginRequest.getPassword());
+        userService.login(
+            loginRequest.getUsername(), loginRequest.getPassword(), loginRequest.getCaptcha());
     if (!userResult.getCode().equals(200)) {
       return Result.error(userResult.getCode(), userResult.getMessage());
     }

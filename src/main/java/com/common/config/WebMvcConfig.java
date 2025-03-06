@@ -22,6 +22,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         .addInterceptor(permissionInterceptor)
         .addPathPatterns("/api/**")
         .excludePathPatterns("/api/auth/**") // 排除登录接口
+        .excludePathPatterns("/api/captcha/generate")
         .excludePathPatterns("/api/user/register");
   }
 

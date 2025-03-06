@@ -8,7 +8,9 @@ import com.common.model.Result;
 import com.common.model.UserInfo;
 import com.common.model.dto.UserDTO;
 import com.common.service.UserService;
+import com.common.utils.CaptchaUtils;
 import com.common.utils.JwtUtil;
+import com.common.utils.PasswordUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +29,10 @@ public class UserServiceImpl implements UserService {
 
   @Autowired private JwtUtil jwtUtil;
 
+  @Autowired private PasswordUtils passwordUtils;
+
+  @Autowired private CaptchaUtils captchaUtils;
+
   private Long getCurrentUserId() {
     // 从请求中获取token
     String token = request.getHeader("Authorization");
@@ -43,9 +49,21 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Result<User> login(String username, String password) {
-    User user = userMapper.findByUsernameAndPassword(username, password);
+  public Result<User> login(String username, String password, String captcha) {
+    String encryptedSessionCaptcha = (String) request.getSession().getAttribute("JSESSIONID");
+    if (encryptedSessionCaptcha == null) {
+      return Result.error(401, "验证码错误");
+    }
+    String sessionCaptcha = captchaUtils.decryptCaptcha(encryptedSessionCaptcha);
+    if (!sessionCaptcha.equalsIgnoreCase(captcha)) {
+      return Result.error(401, "验证码错误");
+    }
+    request.getSession().removeAttribute("JToken");
+    User user = userMapper.findByUsername(username);
     if (user == null) {
+      return Result.error(401, "用户名或密码错误");
+    }
+    if (!passwordUtils.matches(password, user.getPassword())) {
       return Result.error(401, "用户名或密码错误");
     }
     return Result.success(user);
@@ -242,8 +260,7 @@ public class UserServiceImpl implements UserService {
     BeanUtils.copyProperties(userDTO, user);
 
     // 加密密码
-    user.setPassword(user.getPassword());
-
+    user.setPassword(passwordUtils.encryptForStorage(user.getPassword()));
     // 保存用户基本信息
     int result = userMapper.insert(user);
 

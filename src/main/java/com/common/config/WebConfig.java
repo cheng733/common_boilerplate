@@ -21,6 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
         .addPathPatterns("/api/**")
         .excludePathPatterns("/api/auth/**")
         .excludePathPatterns("/api/user/register")
+        .excludePathPatterns("/api/captcha/generate")
         .excludePathPatterns("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs");
 
     // 防盗链拦截器
